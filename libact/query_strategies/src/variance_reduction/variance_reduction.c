@@ -4,10 +4,10 @@
 #include <numpy/arrayobject.h>
 #include <lapacke.h>
 
-/* DGESVD prototype */
-extern void LAPACK_dgesvd_copy( char* jobu, char* jobvt, int* m, int* n, double* a,
-                    int* lda, double* s, double* u, int* ldu, double* vt, int* ldvt,
-                    double* work, int* lwork, int* info );
+///* DGESVD prototype */
+//extern void LAPACK_dgesvd_copy( char* jobu, char* jobvt, int* m, int* n, double* a,
+//                    int* lda, double* s, double* u, int* ldu, double* vt, int* ldvt,
+//                    double* work, int* lwork, int* info );
 
 double** An(double *pi, double *x, int labs, int dims);
 double** A(double **PI, double **X, int labs, int dims, int n_pool);
@@ -71,7 +71,7 @@ double* matrix_mul(double* a, double* b, int m1, int n1, int m2, int n2){
 
 
 void pinv(double** X, int labs, int dims){
-    int m = labs*dims, n = labs*dims, lda = labs*dims, ldu = labs*dims, 
+    int m = labs*dims, n = labs*dims, lda = labs*dims, ldu = labs*dims,
         ldvt = labs*dims, lwork, info;
     double wkopt;
     double *work;
@@ -86,12 +86,12 @@ void pinv(double** X, int labs, int dims){
 
      /* Query and allocate the optimal workspace */
     lwork = -1;
-    LAPACK_dgesvd_copy("All", "All", &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, &wkopt, &lwork,
+    LAPACK_dgesvd("All", "All", &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, &wkopt, &lwork,
         &info);
     lwork = (int)wkopt;
     work = (double*)malloc( lwork*sizeof(double) );
     /* Compute SVD */
-    LAPACK_dgesvd_copy("All", "All", &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork,
+    LAPACK_dgesvd("All", "All", &m, &n, a, &lda, s, u, &ldu, vt, &ldvt, work, &lwork,
         &info);
     /* Check for convergence  */
     if(info > 0) {
