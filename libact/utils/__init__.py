@@ -10,8 +10,6 @@ IS_PY2 = (_VER[0] == 2)
 #: Python 3.x?
 IS_PY3 = (_VER[0] == 3)
 
-if IS_PY2:
-    from future_builtins import zip
 
 __all__ = ['inherit_docstring_from', 'seed_random_state', 'zip']
 
@@ -37,6 +35,7 @@ def seed_random_state(seed):
         return seed
     raise ValueError("%r can not be used to generate numpy.random.RandomState"
                      " instance" % seed)
+
 
 def calc_cost(y, yhat, cost_matrix):
     """Calculate the cost with given cost matrix

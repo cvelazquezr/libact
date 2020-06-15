@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-from io import open # python 2 compatibility
+from io import open
 import os
 from setuptools import setup, Extension
 import sys
 
 BUILD_HINTSVM = int(os.environ.get("LIBACT_BUILD_HINTSVM", 1))
 BUILD_VARIANCE_REDUCTION = int(os.environ.get("LIBACT_BUILD_VARIANCE_REDUCTION", 1))
-
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 # read the docs could not compile numpy and c extensions
@@ -21,14 +20,13 @@ else:
     from Cython.Build import cythonize
     from Cython.Distutils import build_ext
     import numpy
-    import numpy.distutils
+    import numpy.distutils.misc_util
+
     if sys.platform == 'darwin':
         print("Platform Detection: Mac OS X. Link to openblas...")
         extra_link_args = []
-        libraries = ['openblas']
-        library_dirs = ['/opt/local/lib']
-        include_dirs = (numpy.distutils.misc_util.get_numpy_include_dirs() +
-                        ['/opt/local/include'])
+        library_dirs = ['/usr/local/opt/lapack/include']
+        include_dirs = (numpy.distutils.misc_util.get_numpy_include_dirs() + library_dirs)
     else:
         # assume linux otherwise, unless we support Windows in the future...
         print("Platform Detection: Linux. Link to liblapacke...")
@@ -47,9 +45,7 @@ else:
                 ["libact/query_strategies/src/variance_reduction/variance_reduction.c"],
                 extra_link_args=extra_link_args,
                 extra_compile_args=['-std=c11'],
-                include_dirs=include_dirs,
-                libraries=libraries,
-                library_dirs=library_dirs,
+                include_dirs=include_dirs
             )
         )
     if BUILD_HINTSVM:
@@ -76,7 +72,6 @@ else:
         'coverage',
     ]
 
-
 setup(
     name='libact',
     version='0.1.6',
@@ -85,7 +80,7 @@ setup(
     long_description_content_type="text/markdown",
     author='Y.-Y. Yang, S.-C. Lee, Y.-A. Chung, T.-E. Wu, H.-T. Lin',
     author_email='b01902066@csie.ntu.edu.tw, b01902010@csie.ntu.edu.tw, '
-        'b01902040@csie.ntu.edu.tw, r00942129@ntu.edu.tw, htlin@csie.ntu.edu.tw',
+                 'b01902040@csie.ntu.edu.tw, r00942129@ntu.edu.tw, htlin@csie.ntu.edu.tw',
     url='https://github.com/ntucllab/libact',
     cmdclass=cmdclasses,
     setup_requires=setup_requires,
@@ -98,6 +93,7 @@ setup(
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
     ],
     test_suite='libact',
     packages=[

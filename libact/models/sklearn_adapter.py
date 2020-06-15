@@ -1,7 +1,7 @@
 """scikit-learn classifier adapter
 """
 from sklearn.base import clone
-from libact.base.interfaces import Model, ContinuousModel, ProbabilisticModel
+from libact.base.interfaces import Model, ProbabilisticModel
 
 
 class SklearnAdapter(Model):

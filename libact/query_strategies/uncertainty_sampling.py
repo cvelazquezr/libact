@@ -7,9 +7,8 @@ smallest margin method (margin sampling).
 """
 import numpy as np
 
-from libact.base.interfaces import QueryStrategy, ContinuousModel, \
-    ProbabilisticModel
-from libact.utils import inherit_docstring_from, zip
+from libact.base.interfaces import QueryStrategy, ContinuousModel, ProbabilisticModel
+from libact.utils import zip
 
 
 class UncertaintySampling(QueryStrategy):
@@ -18,10 +17,8 @@ class UncertaintySampling(QueryStrategy):
 
     This class implements Uncertainty Sampling active learning algorithm [1]_.
 
-    Parameters
-    ----------
-    model: :py:class:`libact.base.interfaces.ContinuousModel` or :py:class:`libact.base.interfaces.ProbabilisticModel` object instance
-        The base model used for training.
+    Parameters ---------- model: :py:class:`libact.base.interfaces.ContinuousModel` or
+    :py:class:`libact.base.interfaces.ProbabilisticModel` object instance The base model used for training.
 
     method: {'lc', 'sm', 'entropy'}, optional (default='lc')
         least confidence (lc), it queries the instance whose posterior
@@ -34,10 +31,8 @@ class UncertaintySampling(QueryStrategy):
         to be passed in as model parameter;
 
 
-    Attributes
-    ----------
-    model: :py:class:`libact.base.interfaces.ContinuousModel` or :py:class:`libact.base.interfaces.ProbabilisticModel` object instance
-        The model trained in last query.
+    Attributes ---------- model: :py:class:`libact.base.interfaces.ContinuousModel` or
+    :py:class:`libact.base.interfaces.ProbabilisticModel` object instance The model trained in last query.
 
 
     Examples
@@ -89,8 +84,7 @@ class UncertaintySampling(QueryStrategy):
                 "is: " + self.method
             )
 
-        if self.method=='entropy' and \
-                not isinstance(self.model, ProbabilisticModel):
+        if self.method == 'entropy' and not isinstance(self.model, ProbabilisticModel):
             raise TypeError(
                 "method 'entropy' requires model to be a ProbabilisticModel"
             )
@@ -99,6 +93,7 @@ class UncertaintySampling(QueryStrategy):
         dataset = self.dataset
         self.model.train(dataset)
         unlabeled_entry_ids, X_pool = dataset.get_unlabeled_entries()
+        dvalue, score = (None, None)
 
         if isinstance(self.model, ProbabilisticModel):
             dvalue = self.model.predict_proba(X_pool)
@@ -118,7 +113,6 @@ class UncertaintySampling(QueryStrategy):
             score = np.sum(-dvalue * np.log(dvalue), axis=1)
         return zip(unlabeled_entry_ids, score)
 
-
     def make_query(self, return_score=False):
         """Return the index of the sample to be queried and labeled and
         selection score of each sample. Read-only.
@@ -134,9 +128,6 @@ class UncertaintySampling(QueryStrategy):
             Selection score of unlabled entries, the larger the better.
 
         """
-        dataset = self.dataset
-        # unlabeled_entry_ids, _ = dataset.get_unlabeled_entries()
-
         unlabeled_entry_ids, scores = zip(*self._get_scores())
         ask_id = np.argmax(scores)
 

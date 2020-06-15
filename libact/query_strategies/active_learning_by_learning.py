@@ -11,7 +11,7 @@ import copy
 import numpy as np
 
 from libact.base.interfaces import QueryStrategy
-from libact.utils import inherit_docstring_from, seed_random_state, zip
+from libact.utils import inherit_docstring_from, seed_random_state
 
 
 class ActiveLearningByLearning(QueryStrategy):
@@ -411,5 +411,3 @@ class Exp4P(object):
                     )
                 )
             )
-
-        raise StopIteration

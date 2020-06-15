@@ -3,7 +3,6 @@ Base interfaces for use in the package.
 The package works according to the interfaces defined below.
 """
 from six import with_metaclass
-
 from abc import ABCMeta, abstractmethod
 
 

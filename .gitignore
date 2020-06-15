@@ -61,3 +61,6 @@ target/
 examples/australian.txt
 examples/diabetes.txt
 examples/heart.txt
+
+# PyCharm files
+.idea/

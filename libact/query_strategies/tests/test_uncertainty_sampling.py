@@ -5,7 +5,7 @@ from numpy.testing import assert_array_equal
 
 from libact.base.dataset import Dataset
 from libact.models import LogisticRegression, SVM, Perceptron
-from libact.query_strategies import UncertaintySampling, QUIRE
+from libact.query_strategies import UncertaintySampling
 from libact.labelers import IdealLabeler
 
 
@@ -14,7 +14,7 @@ def init_toyexample(X, y):
     return trn_ds
 
 
-def run_qs(trn_ds, lbr, model, qs, quota):
+def run_qs(trn_ds, lbr, qs, quota):
     qseq = []
     for _ in range(quota):
         ask_id, score = qs.make_query(return_score=True)
@@ -40,8 +40,8 @@ class UncertaintySamplingTestCase(unittest.TestCase):
         qs = UncertaintySampling(
             trn_ds, method='lc',
             model=LogisticRegression(solver='liblinear', multi_class="ovr"))
-        model = LogisticRegression(solver='liblinear', multi_class="ovr")
-        qseq = run_qs(trn_ds, self.lbr, model, qs, self.quota)
+        # model = LogisticRegression(solver='liblinear', multi_class="ovr")
+        qseq = run_qs(trn_ds, self.lbr, qs, self.quota)
         assert_array_equal(qseq, np.array([6, 7, 8, 9]))
 
     def test_uncertainty_sm(self):
@@ -49,8 +49,8 @@ class UncertaintySamplingTestCase(unittest.TestCase):
         qs = UncertaintySampling(
             trn_ds, method='sm',
             model=LogisticRegression(solver='liblinear', multi_class="ovr"))
-        model = LogisticRegression(solver='liblinear', multi_class="ovr")
-        qseq = run_qs(trn_ds, self.lbr, model, qs, self.quota)
+        # model = LogisticRegression(solver='liblinear', multi_class="ovr")
+        qseq = run_qs(trn_ds, self.lbr, qs, self.quota)
         assert_array_equal(qseq, np.array([6, 7, 8, 9]))
 
     def test_uncertainty_entropy(self):
@@ -58,8 +58,8 @@ class UncertaintySamplingTestCase(unittest.TestCase):
         qs = UncertaintySampling(
             trn_ds, method='entropy',
             model=LogisticRegression(solver='liblinear', multi_class="ovr"))
-        model = LogisticRegression(solver='liblinear', multi_class="ovr")
-        qseq = run_qs(trn_ds, self.lbr, model, qs, self.quota)
+        # model = LogisticRegression(solver='liblinear', multi_class="ovr")
+        qseq = run_qs(trn_ds, self.lbr, qs, self.quota)
         assert_array_equal(qseq, np.array([6, 7, 8, 9]))
 
     def test_uncertainty_entropy_exceptions(self):

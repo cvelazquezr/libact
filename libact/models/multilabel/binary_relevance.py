@@ -10,8 +10,10 @@ from .dummy_clf import DummyClf
 from libact.base.dataset import Dataset
 from libact.base.interfaces import MultilabelModel
 
+
 def _fit_model(model, X, y):
     model.train(Dataset(X, y))
+
 
 class BinaryRelevance(MultilabelModel):
     r"""Binary Relevance

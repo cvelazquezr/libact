@@ -2,7 +2,6 @@
 This module includes a class for interfacing scikit-learn's perceptron model.
 """
 import sklearn.linear_model
-
 from libact.base.interfaces import Model
 
 

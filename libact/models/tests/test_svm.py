@@ -7,10 +7,7 @@ import unittest
 
 from numpy.testing import assert_array_equal
 from sklearn import datasets
-try:
-    from sklearn.model_selection import train_test_split
-except ImportError:
-    from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
 from libact.base.dataset import Dataset
@@ -29,7 +26,7 @@ class SVMIrisTestCase(unittest.TestCase):
     def test_svm(self):
         svc_clf = SVC(gamma="auto")
         svc_clf.fit(self.X_train, self.y_train)
-        svm = SVM()
+        svm = SVM(gamma="auto")
         svm.train(Dataset(self.X_train, self.y_train))
 
         assert_array_equal(

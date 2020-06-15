@@ -16,10 +16,7 @@ import copy
 
 import numpy as np
 import matplotlib.pyplot as plt
-try:
-    from sklearn.model_selection import train_test_split
-except ImportError:
-    from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 
 # libact classes
 from libact.base.dataset import Dataset
@@ -39,8 +36,7 @@ def split_train_test(n_classes):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
     while len(np.unique(y_train[:n_labeled])) < n_classes:
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.33)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
 
     trn_ds = Dataset(X_train, np.concatenate(
         [y_train[:n_labeled], [None] * (len(y_train) - n_labeled)]))
@@ -113,6 +109,7 @@ def main():
         plt.draw()
 
     input("Press any key to continue...")
+
 
 if __name__ == '__main__':
     main()

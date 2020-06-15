@@ -11,7 +11,7 @@ from libact.utils import inherit_docstring_from
 class IdealLabeler(Labeler):
 
     """
-    Provide the errorless/noiseless label to any feature vectors being queried.
+    Provide a perfect label to any feature vectors being queried.
 
     Parameters
     ----------
