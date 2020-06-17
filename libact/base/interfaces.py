@@ -3,7 +3,7 @@ Base interfaces for use in the package.
 The package works according to the interfaces defined below.
 """
 from six import with_metaclass
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, abstractmethod, ABC
 
 
 class QueryStrategy(with_metaclass(ABCMeta, object)):
@@ -143,7 +143,7 @@ class Model(with_metaclass(ABCMeta, object)):
         pass
 
 
-class MultilabelModel(Model):
+class MultilabelModel(Model, ABC):
     """Multilabel Classification Model
 
     A Model returns a multilabel-predicting function for future samples after

@@ -44,29 +44,29 @@ TARGET_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
 def main():
-    print('downloading australian ...')
+    print('Downloading australian dataset ...')
     rows = list(urllib.request.urlopen(AUS_URL))
     selected = random.sample(rows, AUS_SIZE)
     with open(os.path.join(TARGET_PATH, 'australian.txt'), 'wb') as f:
         for row in selected:
             f.write(row)
-    print('australian downloaded successfully !\n')
+    print('Downloaded successfully !\n')
 
-    print('downloading diabetes ...')
+    print('Downloading diabetes dataset ...')
     rows = list(urllib.request.urlopen(DB_URL))
     selected = random.sample(rows, DB_SIZE)
     with open(os.path.join(TARGET_PATH, 'diabetes.txt'), 'wb') as f:
         for row in selected:
             f.write(row)
-    print('diabetes downloaded successfully !\n')
+    print('Downloaded successfully !\n')
 
-    print('downloading heart ...')
+    print('Downloading heart dataset ...')
     rows = list(urllib.request.urlopen(HT_URL))
     selected = random.sample(rows, HT_SIZE)
     with open(os.path.join(TARGET_PATH, 'heart.txt'), 'wb') as f:
         for row in selected:
             f.write(row)
-    print('heart downloaded successfully !')
+    print('Downloaded successfully !')
 
 
 if __name__ == '__main__':

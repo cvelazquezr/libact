@@ -2,7 +2,6 @@
 
 This module includes an InteractiveLabeler.
 """
-import matplotlib.pyplot as plt
 from six.moves import input
 
 from libact.base.interfaces import Labeler
@@ -13,9 +12,9 @@ class InteractiveLabeler(Labeler):
 
     """Interactive Labeler
 
-    InteractiveLabeler is a Labeler object that shows the feature through image
-    using matplotlib and lets human label each feature through command line
-    interface.
+    InteractiveLabeler is a Labeler object that shows the feature text through
+    in the command line. For images objects, please refer to the original code,
+    not this forked repository.
 
     Parameters
     ----------
@@ -29,19 +28,20 @@ class InteractiveLabeler(Labeler):
         self.label_name = kwargs.pop('label_name', None)
 
     @inherit_docstring_from(Labeler)
-    def label(self, feature):
-        plt.imshow(feature, cmap=plt.cm.gray_r, interpolation='nearest')
-        plt.draw()
-
-        banner = "Enter the associated label with the image: "
-
+    def label(self, text):
         if self.label_name is not None:
-            banner += str(self.label_name) + ' '
+            print(f"Current labels: {str(self.label_name)}")
 
-        lbl = input(banner)
+        banner = f"Enter the associated label with the text: '{text}' "
 
-        while (self.label_name is not None) and (lbl not in self.label_name):
-            print('Invalid label, please re-enter the associated label.')
-            lbl = input(banner)
+        label = input(banner)
 
-        return self.label_name.index(lbl)
+        if self.label_name is None:
+            self.label_name = [label]
+            return 0
+        else:
+            if label in self.label_name:
+                return self.label_name.index(label)
+            else:
+                self.label_name.append(label)
+                return len(self.label_name) - 1

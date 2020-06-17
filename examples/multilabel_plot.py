@@ -4,17 +4,14 @@ Multi-label Active Learning
 """
 
 import copy
-import os
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use('tkAgg')
 import matplotlib.pyplot as plt
-try:
-    from sklearn.model_selection import train_test_split
-except ImportError:
-    from sklearn.cross_validation import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import make_multilabel_classification
 
 # libact classes

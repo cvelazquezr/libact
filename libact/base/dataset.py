@@ -1,12 +1,11 @@
 """
 The dataset class used in this package.
-Datasets consists of data used for training, represented by a list of
+Dataset class consists of data used for training, represented by a list of
 (feature, label) tuples.
 May be exported in different formats for application on other libraries.
 """
 from __future__ import unicode_literals
 
-import random
 import numpy as np
 import scipy.sparse as sp
 
@@ -14,8 +13,7 @@ from libact.utils import zip
 
 
 class Dataset(object):
-
-    """libact dataset object
+    """Library Dataset object
 
     Parameters
     ----------
@@ -34,11 +32,13 @@ class Dataset(object):
     """
 
     def __init__(self, X=None, y=None):
-        if X is None: X = np.array([])
+        if X is None:
+            X = np.array([])
         elif not isinstance(X, sp.csr_matrix):
             X = np.array(X)
 
-        if y is None: y = []
+        if y is None:
+            y = []
         y = np.array(y)
 
         self._X = X
@@ -61,7 +61,8 @@ class Dataset(object):
         return self._X[idx], self._y[idx]
 
     @property
-    def data(self): return self
+    def data(self):
+        return self
 
     def get_labeled_mask(self):
         """
@@ -123,7 +124,7 @@ class Dataset(object):
         """
         if isinstance(self._X, np.ndarray):
             self._X = np.vstack([self._X, feature])
-        else: # sp.csr_matrix
+        else:  # sp.csr_matrix
             self._X = sp.vstack([self._X, feature])
         self._y = np.append(self._y, label)
 
@@ -139,7 +140,7 @@ class Dataset(object):
         entry_id : int
             entry id of the sample to update.
 
-        label : {int, None}
+        new_label : {int, None}
             Label of the sample to be update.
         """
         self._y[entry_id] = new_label
@@ -171,7 +172,7 @@ class Dataset(object):
         y : numpy array, shape = (n_samples)
             Sample labels.
         """
-        # becomes the same as get_labled_entries
+        # becomes the same as get_labeled_entries
         X, y = self.get_labeled_entries()
         return X, np.array(y)
 
@@ -216,9 +217,10 @@ class Dataset(object):
         Parameters
         ----------
         sample_size
+        replace
         """
         idx = np.random.choice(np.where(self.get_labeled_mask())[0],
-                               size=sample_size, replace=replace )
+                               size=sample_size, replace=replace)
         return Dataset(self._X[idx], self._y[idx])
 
 

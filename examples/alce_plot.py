@@ -4,16 +4,12 @@ Cost-Senstive Multi-Class Active Learning
 """
 
 import copy
-import os
 
 import numpy as np
 import matplotlib
 matplotlib.use('tkAgg')
 import matplotlib.pyplot as plt
-try:
-    from sklearn.model_selection import train_test_split
-except ImportError:
-    from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import sklearn.datasets
 from sklearn.svm import SVR

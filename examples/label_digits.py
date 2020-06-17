@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """
 This script simulates real world use of active learning algorithms. Which in the
-start, there are only a small fraction of samples are labeled. During active
-learing process active learning algorithm (QueryStrategy) will choose a sample
-from unlabeled samples to ask the oracle to give this sample a label (Labeler).
+start, there is only a small fraction of samples labeled. During active learning
+the algorithm (QueryStrategy) will choose a sample from the ones unlabeled to ask
+the oracle to provide a label (Labeler).
 
-In this example, ther dataset are from the digits dataset from sklearn. User
-would have to label each sample choosed by QueryStrategy by hand. Human would
-label each selected sample through InteractiveLabeler. Then we will compare the
-performance of using UncertaintySampling and RandomSampling under
-LogisticRegression.
+In this example, the dataset is from the digits dataset loaded from Scikit-Learn.
+The user will have to label each sample selected by the QueryStrategy in a manual
+way. The performances of using UncertaintySampling or RandomSampling under are
+compared.
 """
 
 import copy
@@ -18,7 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-# libact classes
+# Library classes
 from libact.base.dataset import Dataset
 from libact.models import LogisticRegression
 from libact.query_strategies import UncertaintySampling, RandomSampling

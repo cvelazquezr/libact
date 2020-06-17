@@ -6,7 +6,7 @@ smallest margin method (margin sampling).
 
 """
 import numpy as np
-
+from random import random
 from libact.base.interfaces import QueryStrategy, ContinuousModel, ProbabilisticModel
 from libact.utils import zip
 
@@ -75,7 +75,13 @@ class UncertaintySampling(QueryStrategy):
                 "model has to be a ContinuousModel or ProbabilisticModel"
             )
 
-        self.model.train(self.dataset)
+        self.y_empty = kwargs.pop("y_empty", None)
+
+        if self.y_empty is None:
+            self.y_empty = False
+
+        if not self.y_empty:
+            self.model.train(self.dataset)
 
         self.method = kwargs.pop('method', 'lc')
         if self.method not in ['lc', 'sm', 'entropy']:
@@ -91,26 +97,31 @@ class UncertaintySampling(QueryStrategy):
 
     def _get_scores(self):
         dataset = self.dataset
-        self.model.train(dataset)
+
+        _, y = dataset.get_entries()
+
         unlabeled_entry_ids, X_pool = dataset.get_unlabeled_entries()
-        dvalue, score = (None, None)
+        dvalue, score = (None, [random()])
 
-        if isinstance(self.model, ProbabilisticModel):
-            dvalue = self.model.predict_proba(X_pool)
-        elif isinstance(self.model, ContinuousModel):
-            dvalue = self.model.predict_real(X_pool)
+        if y.any():
+            self.model.train(dataset)
 
-        if self.method == 'lc':  # least confident
-            score = -np.max(dvalue, axis=1)
+            if isinstance(self.model, ProbabilisticModel):
+                dvalue = self.model.predict_proba(X_pool)
+            elif isinstance(self.model, ContinuousModel):
+                dvalue = self.model.predict_real(X_pool)
 
-        elif self.method == 'sm':  # smallest margin
-            if np.shape(dvalue)[1] > 2:
-                # Find 2 largest decision values
-                dvalue = -(np.partition(-dvalue, 2, axis=1)[:, :2])
-            score = -np.abs(dvalue[:, 0] - dvalue[:, 1])
+            if self.method == 'lc':  # least confident
+                score = -np.max(dvalue, axis=1)
 
-        elif self.method == 'entropy':
-            score = np.sum(-dvalue * np.log(dvalue), axis=1)
+            elif self.method == 'sm':  # smallest margin
+                if np.shape(dvalue)[1] > 2:
+                    # Find 2 largest decision values
+                    dvalue = -(np.partition(-dvalue, 2, axis=1)[:, :2])
+                score = -np.abs(dvalue[:, 0] - dvalue[:, 1])
+
+            elif self.method == 'entropy':
+                score = np.sum(-dvalue * np.log(dvalue), axis=1)
         return zip(unlabeled_entry_ids, score)
 
     def make_query(self, return_score=False):
